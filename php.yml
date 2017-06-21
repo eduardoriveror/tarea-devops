@@ -1,0 +1,14 @@
+---
+# www.yml: Playbook para servidores web
+- hosts: php
+  sudo: yes
+  pre_tasks:
+     - shell: echo 'I":" Iniciando configuracion..'
+  roles:
+     - ansible-role-php-master
+     - CI
+     - apache
+  vars_files:
+     - vars/main.yml
+  post_tasks:
+     - shell: echo 'I":" Finalizando configuracion..'

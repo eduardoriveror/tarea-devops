@@ -1,0 +1,13 @@
+---
+# www.yml: Playbook para servidores web
+- hosts: web
+  sudo: yes
+  pre_tasks:
+     - shell: echo 'I":" Iniciando configuracion..'
+  roles:
+     - nginx
+#     - CI
+  vars_files:
+     - vars/main.yml
+  post_tasks:
+     - shell: echo 'I":" Finalizando configuracion..'

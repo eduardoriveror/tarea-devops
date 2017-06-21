@@ -1,0 +1,21 @@
+server {
+    listen {{ nginx_port }};
+    server_name {{ php_address }};
+#    access_log /home/ubuntu/frontend/logs/nginx-access.log;
+#    error_log  /home/ubuntu/frontend/logs/nginx-error.log;
+#    root {{ nginx_directory }}/tarea;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    location / {
+        proxy_pass http://{{ php_address }}:{{ apache_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+}

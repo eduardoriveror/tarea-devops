@@ -1,0 +1,6 @@
+---
+# Primeras tareas esenciales para nuevos servidores 4geeks
+
+ - name: Autorizar llave runner a usuario deploy
+   authorized_key: user=ubuntu key="{{ lookup('file', '{{ hostname }}.pub') }}"
+

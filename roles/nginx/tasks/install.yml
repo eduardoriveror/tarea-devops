@@ -1,0 +1,13 @@
+---
+ - name: instalar nginx
+   apt: name=nginx state=latest force=yes
+ - name: Desactivar Vhost por defecto
+   file: dest=/etc/nginx/sites-enabled/default state=absent
+ - name: Copiar archivo VirtualHost Front
+   template: src=front-virtualhost.j2 dest=/etc/nginx/sites-available/frontend-{{ branch }}.conf owner=www-data group=www-data mode=0644
+ - name: Crear Link Simbolico de archivos de configuracion Front
+   file: src=/etc/nginx/sites-available/frontend-{{ branch }}.conf dest=/etc/nginx/sites-enabled/frontend-{{ branch }}.conf state=link 
+   notify:
+     - restart nginx service
+
+

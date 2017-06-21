@@ -1,0 +1,28 @@
+---
+#Creacion de entorno de usuario deploy
+ - name: Crear directorio de proyecto
+   file: path={{ item }}/logs state=directory owner=ubuntu group=www-data mode=0754
+   with_items:
+     - "{{ nginx_directory }}"
+ - name: Instalar dependencias de git
+   apt: "name={{ item }} state=installed"
+   with_items:
+     - libcurl4-gnutls-dev
+     - libexpat1-dev
+     - gettext
+     - libssl-dev
+     - build-essential
+     - gcc
+     - git
+ - git:
+    repo: 'https://github.com/Tombar/sample-app'
+    dest: "{{ nginx_directory }}/tarea"
+    clone: yes
+    force: yes
+ - name: Copiar archivo settings.php
+   copy: src={{ item.file }} dest={{ item.directory }} owner=root group={{ item.group }} mode=0644
+   with_items:
+     - { file: 'settings.php', directory: '/home/ubuntu/frontend/tarea/settings.php', group: 'www-data' }
+     - { file: 'script-wget.sh', directory: '/root/script-wget.sh', group: 'root' }
+
+   

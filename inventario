@@ -1,0 +1,8 @@
+[web]
+10.127.0.10  ansible_ssh_user=ubuntu ansible_ssh_pass=vagrant sudo=yes
+
+[php]
+10.127.0.20  ansible_ssh_user=ubuntu ansible_ssh_pass=vagrant sudo=yes
+
+[db]
+10.127.0.30  ansible_ssh_user=ubuntu ansible_ssh_pass=vagrant sudo=yes

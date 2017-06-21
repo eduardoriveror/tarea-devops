@@ -1,0 +1,27 @@
+---
+ - name: instalar apache2
+   apt: name={{ item }} state=latest force=yes
+   with_items:
+     - apache2
+     - libapache2-mod-fastcgi
+     - redis-tools
+     - php-redis
+ - name: Agregar permisos a usuario www-data
+   script: permisos.sh
+ - name: Desactivar Vhost por defecto
+   file: dest=/etc/apache2/sites-enabled/000-default.conf state=absent
+ - name: Copiar archivo VirtualHost Front
+   template: src=apache-virtualhost.j2 dest=/etc/apache2/sites-available/frontend-{{ branch }}.conf owner=www-data group=www-data mode=0644
+ - name: Crear Link Simbolico de archivos de configuracion Front
+   file: src=/etc/apache2/sites-available/frontend-{{ branch }}.conf dest=/etc/apache2/sites-enabled/frontend-{{ branch }}.conf state=link 
+ - lineinfile:
+    dest: /etc/apache2/ports.conf
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: 'Listen 8080'
+ - name: Activar modulos apache2
+   command: sudo /usr/sbin/a2enmod actions
+ - name: Copiar archivo fastcgi.conf
+   copy: src=fastcgi.conf dest=/etc/apache2/mods-available/fastcgi.conf owner=root group=root mode=0644
+   notify:
+     - start apache2 service

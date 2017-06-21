@@ -1,0 +1,4 @@
+---
+# Archivos incluidos en el rol Nginx (Servidores Web 4Geeks)
+ - include: install.yml
+ - include: services.yml
